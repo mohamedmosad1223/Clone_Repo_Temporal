@@ -27,10 +27,12 @@
     "@temporalio/client": "^1.13.1",
     "@temporalio/worker": "^1.13.1",
     "@temporalio/workflow": "^1.13.1",
-    "nanoid": "3.x"
+    "nanoid": "3.x",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@temporalio/testing": "^1.13.1",
+    "@tsconfig/node24": "^24.0.0",
     "@types/mocha": "8.x",
     "@types/node": "^22.9.1",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -42,7 +44,6 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "@tsconfig/node24": "^24.0.0"
+    "typescript": "^5.6.3"
   }
 }

@@ -1,10 +1,12 @@
 import { TestWorkflowEnvironment } from '@temporalio/testing';
-import { after, before, it } from 'mocha';
+import { before, after, describe, it } from 'mocha';
 import { Worker } from '@temporalio/worker';
-import { example } from '../workflows';
+import { CloneRepoWorkflow } from '../workflows';
 import assert from 'assert';
 
-describe('Example workflow with mocks', () => {
+describe('CloneRepoWorkflow with mock activity', function () {
+  this.timeout(60000);
+
   let testEnv: TestWorkflowEnvironment;
 
   before(async () => {
@@ -15,26 +17,35 @@ describe('Example workflow with mocks', () => {
     await testEnv?.teardown();
   });
 
-  it('successfully completes the Workflow with a mocked Activity', async () => {
+  it('returns mocked sha and path correctly', async function () {
     const { client, nativeConnection } = testEnv;
-    const taskQueue = 'test';
+    const taskQueue = 'clone-test-mock';
 
     const worker = await Worker.create({
       connection: nativeConnection,
       taskQueue,
       workflowsPath: require.resolve('../workflows'),
       activities: {
-        greet: async () => 'Hello, Temporal!',
+        cloneRepo: async () => ({
+          sha: 'mocked-sha-123',
+          path: '/tmp/mock-path',
+        }),
       },
     });
 
     const result = await worker.runUntil(
-      client.workflow.execute(example, {
-        args: ['Temporal'],
-        workflowId: 'test',
+      client.workflow.execute(CloneRepoWorkflow, {
+        args: [{
+          repoUrl: 'https://github.com/octocat/Hello-World.git',
+          ref: 'master',
+        }],
+        workflowId: 'test-clone-mock',
         taskQueue,
-      }),
+      })
     );
-    assert.equal(result, 'Hello, Temporal!');
+
+    assert.equal(result.sha, 'mocked-sha-123');
+    assert.equal(result.path, '/tmp/mock-path');
+    console.log(' Mocked Workflow result:', result);
   });
 });
