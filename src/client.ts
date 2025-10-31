@@ -8,7 +8,7 @@ async function start() {
     workflowId: `clone-${Date.now()}`,
     taskQueue: "clone-queue",
     args: [{
-      repoUrl: "https://github.com/mohamedmosad1223/my-temporal",
+      repoUrl: "https://github.com/mohamedmosad1223/Client_Server.git",
       ref: "main",
     }],
   });

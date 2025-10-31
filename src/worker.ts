@@ -1,4 +1,3 @@
-
 import { Worker } from "@temporalio/worker";
 import * as activities from "./activities";
 
